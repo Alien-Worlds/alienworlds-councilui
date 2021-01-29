@@ -1,0 +1,31 @@
+<template>
+  <div>
+    <div v-if="getAccountName.wax">Logged in as {{getAccountName.wax}}</div>
+    <div v-else><a href="#" @click="login('wax')">Log in</a></div>
+  </div>
+</template>
+
+<style lang="scss">
+</style>
+
+<script>
+import { mapGetters } from 'vuex'
+export default {
+  name: 'Login',
+  computed: {
+    ...mapGetters({
+      getAccountName: 'ual/getAccountName'
+    })
+  },
+  methods: {
+    async logout (network) {
+      console.log('logout of network ', network)
+      this.$store.dispatch('ual/logout', network)
+    },
+    async login (network) {
+      console.log('login to network ', network)
+      this.$store.dispatch('ual/renderLoginModal', network, { root: true })
+    }
+  }
+}
+</script>
