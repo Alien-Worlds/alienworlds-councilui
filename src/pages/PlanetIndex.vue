@@ -1,8 +1,17 @@
 <template>
   <div v-if="planet">
     <h1>{{planet.title}}</h1>
+    <b-container>
+      <b-row>
+        <b-col sm="2"><img :src="planet.fullImage" style="max-width:150px" /></b-col>
+        <b-col sm="10">
+          {{planet.metadata.description}}
+          <p><router-link :to="'/register/' + planetName">Register as a Candidate</router-link></p>
+        </b-col>
+      </b-row>
+    </b-container>
 
-    <h2>Candidates</h2>
+    <hr />
 
     <div v-if="candidatesLoaded">
       <b-card-group columns style="color:#000" v-if="candidates.length">
@@ -34,8 +43,6 @@
     </div>
 
     <div v-if="!candidatesLoaded">Loading...</div>
-
-    <router-link :to="'/register/' + planetName">Register as a Candidate</router-link>
 
     <b-modal id="candidate-detail-modal" hide-footer style="background-color:#000">
       <template #modal-title>
@@ -75,6 +82,8 @@ export default {
         upper_bound: `${planetName}.world`
       })
       this.planet = res.rows[0]
+      this.planet.metadata = JSON.parse(this.planet.metadata)
+      this.planet.fullImage = process.env.ipfsRoot + this.planet.metadata.img
 
       let dacName = this.planetName
       if (dacName === 'neri') {
@@ -101,7 +110,7 @@ export default {
       this.candidatesLoaded = true
     },
     viewCandidate (candidate) {
-      this.candidateDetail.title = candidate.profile.givenName
+      this.candidateDetail.title = candidate.profile.givenName + ' ' + candidate.profile.familyName
       this.candidateDetail.description = candidate.profile.description
       this.$bvModal.show('candidate-detail-modal')
     }

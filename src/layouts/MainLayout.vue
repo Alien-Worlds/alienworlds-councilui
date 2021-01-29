@@ -37,7 +37,7 @@
     </q-drawer>
 
     <q-page-container>
-      <div style="padding: 0 20px">
+      <div style="padding: 20px">
         <router-view />
       </div>
     </q-page-container>
