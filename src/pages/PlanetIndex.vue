@@ -117,6 +117,7 @@ export default {
   },
   watch: {
     '$route.params.planetname': function (planetname) {
+      this.candidatesLoaded = false
       this.planetName = planetname
       this.loadPlanet(planetname)
     }
