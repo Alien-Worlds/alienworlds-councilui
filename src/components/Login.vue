@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="getAccountName.wax">Logged in as {{getAccountName.wax}}</div>
+    <div v-if="getAccountName.wax">Logged in as {{getAccountName.wax}} <b-button href="#" @click="logout('wax')">Log out</b-button></div>
     <div v-else><b-button href="#" @click="login('wax')">Log in</b-button></div>
   </div>
 </template>
