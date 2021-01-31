@@ -14,7 +14,7 @@
       <q-input label="Last Name" v-model="profile.familyName" />
       <q-input label="Image URL" v-model="profile.image" />
       <q-editor v-model="profile.description"
-                :toolbar="[['bold', 'italic', 'strike', 'underline'], [
+                :toolbar="[['bold', 'italic', 'strike', 'underline'], ['a'], [
           {
             label: $q.lang.editor.formatting,
             icon: $q.iconSet.editor.formatting,
@@ -211,7 +211,7 @@ export default {
     },
     'profile.description': function (text) {
       const sanitizeOptions = {
-        allowedTags: ['b', 'i', 'em', 'strong', 'a', 'strike', 'iframe'],
+        allowedTags: ['b', 'i', 'em', 'strong', 'a', 'strike', 'iframe', 'br', 'p'],
         allowedAttributes: {
           a: ['href'],
           iframe: ['width', 'height', 'src', 'allow', 'allowfullscreen']
