@@ -211,9 +211,10 @@ export default {
     },
     'profile.description': function (text) {
       const sanitizeOptions = {
-        allowedTags: ['b', 'i', 'em', 'strong', 'a', 'strike'],
+        allowedTags: ['b', 'i', 'em', 'strong', 'a', 'strike', 'iframe'],
         allowedAttributes: {
-          a: ['href']
+          a: ['href'],
+          iframe: ['width', 'height', 'src', 'allow', 'allowfullscreen']
         },
         allowedIframeHostnames: ['www.youtube.com']
       }
