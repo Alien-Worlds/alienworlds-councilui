@@ -14,7 +14,7 @@
       <q-input label="Last Name" v-model="profile.familyName" />
       <q-input label="Image URL" v-model="profile.image" />
       <q-editor v-model="profile.description"
-                :toolbar="[['bold', 'italic', 'strike', 'underline'], ['a'], [
+                :toolbar="[['bold', 'italic', 'strike', 'underline'], ['link', 'hr'], [
           {
             label: $q.lang.editor.formatting,
             icon: $q.iconSet.editor.formatting,
