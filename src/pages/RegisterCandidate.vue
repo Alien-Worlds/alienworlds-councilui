@@ -29,7 +29,7 @@
               'h6',
               'code'
             ]
-          }], ['viewsource']]"
+          }],  ['quote', 'unordered', 'ordered', 'outdent', 'indent'], ['viewsource']]"
       />
 
       <b-button @click="submitProfile">Submit Profile</b-button>
