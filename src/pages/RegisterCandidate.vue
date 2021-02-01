@@ -136,57 +136,57 @@ export default {
       console.log(process.env)
       const actions = []
 
-      const hash = await this.$getConstitutionHash(this.dacName)
-      console.log('got hash', hash)
+      try {
+        const hash = await this.$getConstitutionHash(this.dacName)
+        console.log('got hash', hash)
 
-      if (!this.member.isMember) {
-        actions.push({
-          account: process.env.daoTokenContract,
-          name: 'memberrege',
-          authorization: [{
-            actor: this.getAccountName.wax,
-            permission: 'active'
-          }],
-          data: {
-            sender: this.getAccountName.wax,
-            agreedterms: hash,
-            dac_id: this.dacName
-          }
-        })
-      }
-
-      actions.push({
-        account: process.env.daoContract,
-        name: 'stprofile',
-        authorization: [{
-          actor: this.getAccountName.wax,
-          permission: 'active'
-        }],
-        data: {
-          cand: this.getAccountName.wax,
-          profile: this.getProfileJson(),
-          dac_id: this.dacName
+        if (!this.member.isMember) {
+          actions.push({
+            account: process.env.daoTokenContract,
+            name: 'memberrege',
+            authorization: [{
+              actor: this.getAccountName.wax,
+              permission: 'active'
+            }],
+            data: {
+              sender: this.getAccountName.wax,
+              agreedterms: hash,
+              dac_id: this.dacName
+            }
+          })
         }
-      })
 
-      if (!this.candidate.active) {
         actions.push({
           account: process.env.daoContract,
-          name: 'nominatecane',
+          name: 'stprofile',
           authorization: [{
             actor: this.getAccountName.wax,
             permission: 'active'
           }],
           data: {
             cand: this.getAccountName.wax,
-            requestedpay: '0.0000 TLM',
+            profile: this.getProfileJson(),
             dac_id: this.dacName
           }
         })
-      }
 
-      // console.log(actions)
-      try {
+        if (!this.candidate.active) {
+          actions.push({
+            account: process.env.daoContract,
+            name: 'nominatecane',
+            authorization: [{
+              actor: this.getAccountName.wax,
+              permission: 'active'
+            }],
+            data: {
+              cand: this.getAccountName.wax,
+              requestedpay: '0.0000 TLM',
+              dac_id: this.dacName
+            }
+          })
+        }
+
+        // console.log(actions)
         const profileResp = await this.$store.dispatch('ual/transact', { actions, network: 'wax' })
         console.log(profileResp)
         if (profileResp.status === 'executed') {

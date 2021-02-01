@@ -14,14 +14,18 @@ Vue.prototype.$getConstitutionHash = async (dacId) => {
   if (!constRes.rows.length) {
     throw new Error(`Could not find current terms for ${dacId}`)
   }
-  const urlRes = await fetch(constRes.rows[0].terms)
-  const constitutionText = await urlRes.text()
-  const constitutionMd5 = md5(constitutionText)
+  try {
+    const urlRes = await fetch(constRes.rows[0].terms)
+    const constitutionText = await urlRes.text()
+    const constitutionMd5 = md5(constitutionText)
 
-  if (constitutionMd5 !== constRes.rows[0].hash) {
-    console.error('Downloaded constitution doesnt match on chain hash')
-    return constRes.rows[0].hash
+    if (constitutionMd5 !== constRes.rows[0].hash) {
+      console.error('Downloaded constitution doesnt match on chain hash')
+      return constRes.rows[0].hash
+    }
+
+    return constitutionMd5
+  } catch (e) {
+    throw new Error(`Could not fetch constitution from ${constRes.rows[0].terms}`)
   }
-
-  return constitutionMd5
 }
