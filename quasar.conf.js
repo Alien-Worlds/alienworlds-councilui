@@ -28,6 +28,7 @@ module.exports = function (ctx) {
       'waxapi',
       'bootstrap',
       'sweetalert',
+      'dao',
       'i18n'
     ],
 

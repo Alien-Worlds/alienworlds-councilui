@@ -125,6 +125,9 @@ export default {
       console.log(process.env)
       const actions = []
 
+      const hash = await this.$getConstitutionHash(this.dacName)
+      console.log('got hash', hash)
+
       if (!this.member.isMember) {
         actions.push({
           account: process.env.daoTokenContract,
@@ -135,7 +138,7 @@ export default {
           }],
           data: {
             sender: this.getAccountName.wax,
-            agreedterms: '1a46b49d0375591b94d5cbb6de8ff728',
+            agreedterms: hash,
             dac_id: this.dacName
           }
         })
