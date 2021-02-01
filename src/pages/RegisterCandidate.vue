@@ -2,19 +2,21 @@
   <div v-if="planet">
     <h1>Register as a candidate on {{planet.title}}</h1>
 
-    <form
-      autocorrect="off"
-      autocapitalize="off"
-      autocomplete="off"
-      spellcheck="true"
-    >
-      <b-alert show variant="success" v-if="candidate.active">You are currently registered as a candidate for {{planet.title}}</b-alert>
+    <div class="row">
+      <div class="col-6 q-pa-sm">
+        <form
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="off"
+          spellcheck="true"
+        >
+          <b-alert show variant="success" v-if="candidate.active">You are currently registered as a candidate for {{planet.title}}</b-alert>
 
-      <q-input label="First Name" v-model="profile.givenName" />
-      <q-input label="Last Name" v-model="profile.familyName" />
-      <q-input label="Image URL" v-model="profile.image" />
-      <q-editor v-model="profile.description"
-                :toolbar="[['bold', 'italic', 'strike', 'underline'], ['link', 'hr'], [
+          <q-input label="First Name" v-model="profile.givenName" />
+          <q-input label="Last Name" v-model="profile.familyName" />
+          <q-input label="Image URL" v-model="profile.image" />
+          <q-editor v-model="profile.description"
+                    :toolbar="[['bold', 'italic', 'strike', 'underline'], ['link', 'hr'], [
           {
             label: $q.lang.editor.formatting,
             icon: $q.iconSet.editor.formatting,
@@ -30,12 +32,21 @@
               'code'
             ]
           }],  ['quote', 'unordered', 'ordered', 'outdent', 'indent'], ['viewsource']]"
-      />
+          />
 
-      <b-button @click="submitProfile">Submit Profile</b-button>
-    </form>
+          <b-button @click="submitProfile">Submit Profile</b-button>
+        </form>
+      </div>
 
-    <div v-html="candidateDescSanitized"></div>
+      <div class="col-6 q-pa-sm">
+        <h2>Preview</h2>
+        <div v-if="profile.image">
+          <img :src="profile.image" style="width: 435px" />
+        </div>
+        <div v-html="candidateDescSanitized"></div>
+      </div>
+    </div>
+
   </div>
 </template>
 
