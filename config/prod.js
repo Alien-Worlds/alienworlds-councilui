@@ -1,12 +1,11 @@
 module.exports = {
-  waxEndpoint: 'https://wax-test.eosdac.io',
-  // waxEndpoint: 'https://testnet.waxsweden.org',
-  waxChainId: 'f16b1833c747c43682f4386fca9cbb327929334a762755ebec17f6f23c9b8a12',
-  atomicEndpoint: 'https://test.wax.api.atomicassets.io',
-  dacApiEndpoint: 'http://51.195.188.13:8383',
+  waxEndpoint: 'https://wax.eosdac.io',
+  waxChainId: '1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4',
+  atomicEndpoint: 'https://wax.api.atomicassets.io',
+  dacApiEndpoint: 'https://dao-api.alienworlds.io',
   collectionName: 'alien.worlds',
-  daoContract: 'dac.world',
-  daoTokenContract: 'token.world',
+  daoContract: 'dao.worlds',
+  daoTokenContract: 'token.worlds',
   federationContract: 'federation',
   ipfsRoot: 'https://ipfs.io/ipfs/'
 }
