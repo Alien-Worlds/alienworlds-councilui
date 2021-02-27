@@ -158,8 +158,15 @@ export default {
 
         console.log('PLANET', this.planet)
         const stakeRequirement = await this.$getStakeRequirement(this.dacName)
-        const [reqStr] = stakeRequirement.split(' ')
-        if (parseFloat(reqStr) > 0) {
+        const [reqStr, daoStakeSym] = stakeRequirement.split(' ')
+        const stake = await this.$getStake(this.dacName, this.getAccountName.wax)
+        let stakeStr = '0'
+        if (stake) {
+          [stakeStr] = stake.split(' ')
+        }
+        const extraStake = parseFloat(reqStr) - parseFloat(stakeStr)
+        console.log(`Staked ${stakeStr} (${stake}), required ${reqStr}`)
+        if (extraStake > 0) {
           actions.push({
             account: process.env.daoTokenContract,
             name: 'stake',
@@ -169,7 +176,7 @@ export default {
             }],
             data: {
               account: this.getAccountName.wax,
-              quantity: stakeRequirement
+              quantity: `${extraStake.toFixed(4)} ${daoStakeSym}`
             }
           })
         }
