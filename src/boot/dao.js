@@ -42,3 +42,18 @@ Vue.prototype.$getStakeRequirement = async (dacId) => {
   }
   return null
 }
+
+Vue.prototype.$getStake = async (dacId, account) => {
+  const stakeRes = await Vue.prototype.$wax.rpc.get_table_rows({
+    code: process.env.daoTokenContract,
+    scope: dacId,
+    table: 'stakes',
+    lower_bound: account,
+    upper_bound: account
+  })
+  // console.log(configRes.rows[0].lockupasset.quantity)
+  if (stakeRes.rows.length) {
+    return stakeRes.rows[0].stake
+  }
+  return null
+}
