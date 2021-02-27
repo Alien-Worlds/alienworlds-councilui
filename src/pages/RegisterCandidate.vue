@@ -156,6 +156,24 @@ export default {
           })
         }
 
+        console.log('PLANET', this.planet)
+        const stakeRequirement = await this.$getStakeRequirement(this.dacName)
+        const [reqStr] = stakeRequirement.split(' ')
+        if (parseFloat(reqStr) > 0) {
+          actions.push({
+            account: process.env.daoTokenContract,
+            name: 'stake',
+            authorization: [{
+              actor: this.getAccountName.wax,
+              permission: 'active'
+            }],
+            data: {
+              account: this.getAccountName.wax,
+              quantity: stakeRequirement
+            }
+          })
+        }
+
         actions.push({
           account: process.env.daoContract,
           name: 'stprofile',
