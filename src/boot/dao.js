@@ -29,3 +29,16 @@ Vue.prototype.$getConstitutionHash = async (dacId) => {
     throw new Error(`Could not fetch constitution from ${constRes.rows[0].terms}`)
   }
 }
+
+Vue.prototype.$getStakeRequirement = async (dacId) => {
+  const configRes = await Vue.prototype.$wax.rpc.get_table_rows({
+    code: process.env.daoContract,
+    scope: dacId,
+    table: 'config2'
+  })
+  // console.log(configRes.rows[0].lockupasset.quantity)
+  if (configRes.rows.length) {
+    return configRes.rows[0].lockupasset.quantity
+  }
+  return null
+}
