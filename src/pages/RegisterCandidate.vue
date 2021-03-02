@@ -102,7 +102,11 @@ export default {
       this.dacName = dacName
       const [, sym] = this.planet.dac_symbol.split(',')
       this.dacSymbol = sym
-      this.stakeRequirement = await this.$getStakeRequirement(dacName)
+      this.stakeRequirement = `0.0000 ${sym}`
+      const sr = await this.$getStakeRequirement(dacName)
+      if (sr) {
+        this.stakeRequirement = sr
+      }
       const tokenRes = await this.$wax.rpc.get_currency_balance(process.env.daoTokenContract, this.getAccountName.wax, sym)
       // console.log(tokenRes)
       this.daoTokenBalance = `0.0000 ${sym}`
