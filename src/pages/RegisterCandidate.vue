@@ -105,10 +105,13 @@ export default {
       this.stakeRequirement = await this.$getStakeRequirement(dacName)
       const tokenRes = await this.$wax.rpc.get_currency_balance(process.env.daoTokenContract, this.getAccountName.wax, sym)
       // console.log(tokenRes)
-      this.daoTokenBalance = tokenRes[0]
+      this.daoTokenBalance = `0.0000 ${sym}`
+      if (tokenRes.length) {
+        this.daoTokenBalance = tokenRes[0]
+      }
       const existingStake = await this.$getStake(this.getAccountName.wax)
       console.log(existingStake)
-      const [balStr] = tokenRes[0].split(' ')
+      const [balStr] = this.daoTokenBalance.split(' ')
       const [reqStr] = this.stakeRequirement.split(' ')
       let existingStr = `0.0000 ${sym}`
       if (existingStake) {
