@@ -282,6 +282,7 @@ export default {
     },
     getAccountName: function (account) {
       console.log('Accounbt changed')
+      this.loadPlanet(this.$route.params.planetname)
     },
     'profile.description': function (text) {
       const sanitizeOptions = {
