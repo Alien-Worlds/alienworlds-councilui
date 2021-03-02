@@ -121,6 +121,7 @@ export default {
       if (existingStake) {
         [existingStr] = existingStake.split(' ')
       }
+      this.insufficientDaoBalance = false
       if (parseFloat(reqStr) >= (parseFloat(balStr) + parseFloat(existingStr))) {
         this.insufficientDaoBalance = true
       }
