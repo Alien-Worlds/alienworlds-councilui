@@ -2,7 +2,7 @@
   <div v-if="planet">
     <h1>Register as a candidate on {{planet.title}}</h1>
 
-    <div class="row">
+    <div class="row" v-if="getAccountName.wax">
       <div class="col-6 q-pa-sm">
         <form
           autocorrect="off"
@@ -52,6 +52,9 @@
         </div>
         <div v-html="candidateDescSanitized"></div>
       </div>
+    </div>
+    <div class="row" v-else>
+      Awaiting login
     </div>
 
   </div>
