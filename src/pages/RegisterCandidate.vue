@@ -34,7 +34,14 @@
           }],  ['quote', 'unordered', 'ordered', 'outdent', 'indent'], ['viewsource']]"
           />
 
-          <b-button @click="submitProfile">Submit Profile</b-button>
+          <div class="mt-2" v-if="!insufficientDaoBalance">
+            <b-button @click="submitProfile">Submit Profile</b-button>
+          </div>
+
+          <div class="mt-3">
+            <div class="alert alert-warning">Registering as a candidate requires {{stakeRequirement}} tokens to be locked, you have {{daoTokenBalance}} available</div>
+            <div class="alert alert-danger" v-if="insufficientDaoBalance">You do not have enough DAO tokens to register</div>
+          </div>
         </form>
       </div>
 
@@ -62,6 +69,10 @@ export default {
       planetName: null,
       profile: { givenName: '', familyName: '', image: '', description: '' },
       dacName: null,
+      stakeRequirement: '',
+      daoTokenBalance: '',
+      dacSymbol: '',
+      insufficientDaoBalance: false,
       member: { isMember: false, termsVersion: 0 },
       candidate: { active: false },
       candidateDescSanitized: ''
@@ -89,6 +100,23 @@ export default {
         dacName = 'nerix'
       }
       this.dacName = dacName
+      const [, sym] = this.planet.dac_symbol.split(',')
+      this.dacSymbol = sym
+      this.stakeRequirement = await this.$getStakeRequirement(dacName)
+      const tokenRes = await this.$wax.rpc.get_currency_balance(process.env.daoTokenContract, this.getAccountName.wax, sym)
+      // console.log(tokenRes)
+      this.daoTokenBalance = tokenRes[0]
+      const existingStake = await this.$getStake(this.getAccountName.wax)
+      console.log(existingStake)
+      const [balStr] = tokenRes[0].split(' ')
+      const [reqStr] = this.stakeRequirement.split(' ')
+      let existingStr = `0.0000 ${sym}`
+      if (existingStake) {
+        [existingStr] = existingStake.split(' ')
+      }
+      if (parseFloat(reqStr) >= (parseFloat(balStr) + parseFloat(existingStr))) {
+        this.insufficientDaoBalance = true
+      }
     },
     async loadCandidateInfo () {
       console.log('Load candidate info')
