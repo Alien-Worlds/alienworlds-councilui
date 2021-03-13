@@ -2,7 +2,7 @@
   <div v-bind:class="['intro', 'contents', {active: isActive}]">
     <div class="logo"></div>
     <h1 class="title">Planetary Councils</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla hendrerit dolor tellus. Aliquam porttitor urna eu purus placerat.</p>
+    <p>Welcome Explorer - Every planet needs the best people to run it and the Alien Worlds DAO system lets you decide who has control - Maybe you should be the leader!</p>
     <login></login>
   </div>
 </template>
