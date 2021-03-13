@@ -3,13 +3,13 @@ import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
 import ual from 'components/ual/store'
-// import global from './global'
+import global from './global'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
-    // global,
+    global,
     ual
   },
   plugins: [

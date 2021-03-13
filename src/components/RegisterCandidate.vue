@@ -1,8 +1,51 @@
 <template>
-  <div v-if="planet">
-    <h1>Register as a candidate on {{planet.title}}</h1>
+  <div>
+    <form>
+      <div class="inforegister">
+        <h4>Become a Candidate</h4>
+        <div v-if="getAccountName.wax">
+          <p class="req">
+            {{stakeRequirement}} tokens will be locked once registered
+            <span v-if="candidate.active"><br />You are already registered as a candidate for {{planet.title}}</span>
+          </p>
+          <div class="errormsg active" v-if="insufficientDaoBalance">
+            <h3>Insufficient Balance</h3>
+            <p>Not enough DAO tokens to register, you have {{daoTokenBalance}} available.</p>
+          </div>
+          <div>
+            <q-input label="First Name" v-model="profile.givenName" />
+            <q-input label="Last Name" v-model="profile.familyName" />
+            <q-input label="Image URL" v-model="profile.image" />
+            <q-editor v-model="profile.description"
+                      :toolbar="[['bold', 'italic', 'strike', 'underline'], ['link', 'hr'], [
+          {
+            label: $q.lang.editor.formatting,
+            icon: $q.iconSet.editor.formatting,
+            list: 'no-icons',
+            options: [
+              'p',
+              'h1',
+              'h2',
+              'h3',
+              'h4',
+              'h5',
+              'h6',
+              'code'
+            ]
+          }],  ['quote', 'unordered', 'ordered', 'outdent', 'indent'], ['viewsource']]"
+            />
+            <div v-if="!insufficientDaoBalance">
+              <a @click="submitProfile" class="button" role="button">Submit Profile</a>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          Please log in to proceed
+        </div>
+      </div>
+    </form>
 
-    <div class="row" v-if="getAccountName.wax">
+    <!-- <div v-if="getAccountName.wax">
       <div class="col-6 q-pa-sm">
         <form
           autocorrect="off"
@@ -55,7 +98,7 @@
     </div>
     <div class="row" v-else>
       Awaiting login
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -125,7 +168,7 @@ export default {
         [existingStr] = existingStake.split(' ')
       }
       this.insufficientDaoBalance = false
-      if (parseFloat(reqStr) >= (parseFloat(balStr) + parseFloat(existingStr))) {
+      if (parseFloat(reqStr) > (parseFloat(balStr) + parseFloat(existingStr))) {
         this.insufficientDaoBalance = true
       }
     },
@@ -254,10 +297,12 @@ export default {
         const profileResp = await this.$store.dispatch('ual/transact', { actions, network: 'wax' })
         console.log(profileResp)
         if (profileResp.status === 'executed') {
-          this.$showSuccess('Registration complete')
+          // this.$showSuccess('Registration complete')
+          await this.$store.commit('global/setInfo', 'Registration complete')
         }
       } catch (e) {
-        this.$showError(e.message)
+        // this.$showError(e.message)
+        await this.$store.commit('global/setError', e.message)
       }
     },
     getProfileJson () {
@@ -281,6 +326,7 @@ export default {
   },
   watch: {
     '$route.params.planetname': async function (planetname) {
+      this.candidate.active = false
       await this.loadPlanet(planetname)
       await this.loadCandidateInfo()
     },

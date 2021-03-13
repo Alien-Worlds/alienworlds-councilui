@@ -26,8 +26,6 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
       'waxapi',
-      'bootstrap',
-      'sweetalert',
       'dao',
       'i18n'
     ],

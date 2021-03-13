@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div v-if="getAccountName.wax">Logged in as {{getAccountName.wax}} <b-button href="#" @click="logout('wax')">Log out</b-button></div>
-    <div v-else><b-button href="#" @click="login('wax')">Log in</b-button></div>
+    <div v-if="getAccountName.wax">
+      <span class="status">Logged in as</span> <span> {{getAccountName.wax}}</span>
+      <a role="button" tabindex="0" href="#" target="_self" class="button" @click="logout('wax', $event)">Log out</a>
+    </div>
+    <div v-else>
+      <a role="button" tabindex="0" href="#" target="_self" class="button" @click="login('wax', $event)">Log in</a>
+    </div>
   </div>
 </template>
-
-<style lang="scss">
-</style>
 
 <script>
 import { mapGetters } from 'vuex'
@@ -18,13 +20,21 @@ export default {
     })
   },
   methods: {
-    async logout (network) {
+    async logout (network, event) {
       console.log('logout of network ', network)
       this.$store.dispatch('ual/logout', network)
+      if (event) {
+        event.preventDefault()
+      }
+      return false
     },
-    async login (network) {
+    async login (network, event) {
       console.log('login to network ', network)
       this.$store.dispatch('ual/renderLoginModal', network, { root: true })
+      if (event) {
+        event.preventDefault()
+      }
+      return false
     }
   }
 }

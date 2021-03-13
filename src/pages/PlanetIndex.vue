@@ -1,5 +1,63 @@
 <template>
-  <div v-if="planet">
+<!--  <div v-if="planet">-->
+  <div class="wrapper" v-if="planet">
+    <div id="info" v-bind:class="['contents', planet.planet_name.replace('.world', ''), {active: show}, {candidate: showRegister}]" v-if="loaded">
+      <div class="theinfo">
+        <h2 class="title">{{planet.title}}</h2>
+        <div class="infocontent">
+          <p>{{planet.metadata.description}}</p>
+          <a class="button vote" @click="show = false;showVoting = true">Vote</a>
+        </div>
+        <register-candidate />
+      </div>
+      <div class="theplanet">
+        <div class="globewrap"><div class="globe"></div></div>
+        <a class="button invert register" @click="showRegister = true">Become a Candidate</a>
+      </div>
+    </div>
+
+    <div id="voting" v-bind:class="['contents', planetName, {active: showVoting}]">
+      <div class="titlewrap">
+        <h2 class="title">{{planet.title}}</h2><div class="globe"></div><h4>Candidates</h4>
+      </div>
+      <div v-bind:class="['candidateswrap', {viewbio: showingCandidate}]">
+        <!-- -------------------Main Candidate Profile------------------- -->
+        <div class="candprofile" v-for="candidate in candidates" :key="candidate.candidate_name">
+          <div class="persona" @click="viewCandidate(candidate)">
+            <div class="image" v-bind:style="{'backgroundImage': 'url(' + candidate.profile.image + ')'}" v-if="candidate.profile.image"></div>
+            <div class="image" v-if="!candidate.profile.image"></div>
+            <div class="personainfo">
+              <div class="name">{{candidate.profile.givenName}} {{candidate.profile.familyName}}</div>
+              <div class="votes"><div class="count">0</div></div>
+            </div>
+          </div>
+          <!-- Add back once voting active
+          <div class="votebtn"><div class="voteicon"></div></div>
+           -->
+        </div>
+      </div>
+
+      <!-- -------------------Separate loaded Bio Description, Used to pull in the Bio Informatio from the Profile/Candidate Registration------------------- -->
+      <div v-bind:class="['biowrap', {active: showingCandidate}]">
+        <div class="candprofile">
+          <div class="persona">
+            <div class="image" v-bind:style="{'backgroundImage': 'url(' + selectedCandidate.profile.image + ')'}" v-if="selectedCandidate.profile.image"></div>
+            <div class="image" v-if="!selectedCandidate.profile.image"></div>
+            <div class="personainfo"><div class="name">{{selectedCandidate.profile.givenName}} {{selectedCandidate.profile.familyName}}</div>
+              <div class="votes"><div class="count">0</div></div></div>
+          </div>
+<!--          <div class="votebtn"><div class="voteicon"></div></div>-->
+        </div>
+        <div class="biodesc">
+          <p v-html="selectedCandidate.profile.description"></p>
+          <a class="button invert return" @click="showingCandidate = false">Back to Candidate List</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+    <!--
     <h1>{{planet.title}}</h1>
     <b-container>
       <b-row>
@@ -51,21 +109,31 @@
       <div class="d-block text-center" v-html="candidateDetail.description">
       </div>
       <b-button class="mt-3" block @click="$bvModal.hide('candidate-detail-modal')">Close</b-button>
-    </b-modal>
-  </div>
+    </b-modal> -->
+<!--  </div>-->
 </template>
 
 <script>
 import sanitizeHtml from 'sanitize-html'
+import RegisterCandidate from 'components/RegisterCandidate'
 
 export default {
   name: 'PlanetIndex',
+  components: {
+    RegisterCandidate
+  },
   data () {
     return {
       planetName: '',
       planet: null,
       candidates: [],
       candidatesLoaded: false,
+      loaded: false,
+      show: false,
+      showVoting: false,
+      showRegister: false,
+      showingCandidate: false,
+      selectedCandidate: { profile: {} },
       candidateDetail: {
         title: '',
         description: ''
@@ -108,16 +176,25 @@ export default {
       })
 
       this.candidatesLoaded = true
+      this.loaded = true
+
+      setTimeout(() => {
+        this.show = true
+      }, 50)
     },
     viewCandidate (candidate) {
-      this.candidateDetail.title = candidate.profile.givenName + ' ' + candidate.profile.familyName
-      this.candidateDetail.description = candidate.profile.description
-      this.$bvModal.show('candidate-detail-modal')
+      this.selectedCandidate = candidate
+      this.showingCandidate = true
     }
   },
   watch: {
     '$route.params.planetname': function (planetname) {
       this.candidatesLoaded = false
+      this.loaded = false
+      this.show = false
+      this.showVoting = false
+      this.showRegister = false
+      this.showingCandidate = false
       this.planetName = planetname
       this.loadPlanet(planetname)
     }
