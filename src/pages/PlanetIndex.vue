@@ -6,7 +6,7 @@
         <h2 class="title">{{planet.title}}</h2>
         <div class="infocontent">
           <p>{{planet.metadata.description}}</p>
-          <a class="button vote" @click="show = false;showVoting = true">Vote</a>
+          <a class="button vote" @click="show = false;showVoting = true">View Candidates</a>
         </div>
         <register-candidate />
       </div>
