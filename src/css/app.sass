@@ -196,7 +196,8 @@ div
 /* Easings
  *---------------------------------------------
 
-nav, .item, .planet, .globe, .button, .gradients, .sky, .fade
+
+nav, .item, .planet, .globe, .button, .gradients, .sky, .fade, .planet:before, .planet:after, .persona, .voteicon, .back
   -webkit-transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   -moz-transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   -ms-transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
@@ -412,10 +413,10 @@ p
 .type
   &.success
     h3
-      color: #d9a555
+      color: #0ed4a8
 
     .icon
-      background-image: url('images/alienworlds-icon-login.svg')
+      background-image: url('images/alienworlds-icon-success.svg')
 
   &.error
     h3
@@ -671,6 +672,23 @@ nav
     &:hover .planet:after, &.router-link-active .planet:after
       transform: translateX(10px) rotate(180deg)
 
+.back
+  font-family:'Orbitron', sans-serif
+  background: url('images/alienworlds-icon-arrow_return.svg') no-repeat left center
+  background-size: contain
+  padding-left: 30px
+  font-size: 14px
+  letter-spacing: 2px
+  margin-bottom: 2%
+  cursor: pointer
+  transform-origin: left center
+
+  &:hover
+    transform: scale(.95)
+    opacity: .8
+
+.isregister .back, .isvoting .back
+  display:block
 /* Buttons
  *---------------------------------------------
 
@@ -735,6 +753,34 @@ nav
     width: 50%
     vertical-align: middle
 
+    .notlogged, .islogged
+      display: none
+      &.active
+        display: inline-block
+
+    > div
+      display: inline-block
+      vertical-align: middle
+
+    .loginbtn, .logoutbtn
+      padding: 0 0 0 35px
+      background-color: transparent
+      background-repeat: no-repeat
+      background-position: left center
+      background-size: 25px
+      border: none
+      letter-spacing: 2px
+      font-size: 16px
+
+    .loginbtn
+      color: #d9a555
+      background-image: url('images/alienworlds-icon-login.svg')
+
+    .logoutbtn
+      color: #ff3b52
+      background-image: url('images/alienworlds-icon-logout.svg')
+      margin-left: 20px
+
   .watermark
     display: inline-block
     width: 50%
@@ -795,11 +841,10 @@ nav
 
 /* Planet Info and Elements
  *---------------------------------------------
-
 #info
   left: 60%
-  top: 50%
-  transform: translate(-50%, 0%)
+  top: 0%
+  transform: translate(-50%,50%)
   width: 70%
   margin: 0 auto
   white-space: nowrap
@@ -807,8 +852,8 @@ nav
   position: absolute
 
   &.active
-    top: 45%
-    transform: translate(-50%, -50%)
+    top: 10%
+    transform: translate(-50%,0%)
 
 .theinfo, .theplanet
   display: inline-block
@@ -1145,7 +1190,7 @@ nav
   &.active
     display: block
     position: absolute
-    top: 10%
+    top: 15%
     width: 100%
 
   .candprofile
@@ -1808,6 +1853,17 @@ nav .veles .globe
     flex: 1
     z-index: 97
     padding: 16px 2%
+
+    .login
+      width: 70%
+      letter-spacing: 0px
+      padding-left: 2%
+
+    .logoutbtn
+      margin-left: 8px
+
+    .watermark
+      width:20%
 
     .watermark, .login
       width: auto

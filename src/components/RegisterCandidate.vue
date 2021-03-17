@@ -45,61 +45,6 @@
       </div>
     </form>
 
-    <!-- <div v-if="getAccountName.wax">
-      <div class="col-6 q-pa-sm">
-        <form
-          autocorrect="off"
-          autocapitalize="off"
-          autocomplete="off"
-          spellcheck="true"
-        >
-          <b-alert show variant="success" v-if="candidate.active">You are currently registered as a candidate for {{planet.title}}</b-alert>
-
-          <q-input label="First Name" v-model="profile.givenName" />
-          <q-input label="Last Name" v-model="profile.familyName" />
-          <q-input label="Image URL" v-model="profile.image" />
-          <q-editor v-model="profile.description"
-                    :toolbar="[['bold', 'italic', 'strike', 'underline'], ['link', 'hr'], [
-          {
-            label: $q.lang.editor.formatting,
-            icon: $q.iconSet.editor.formatting,
-            list: 'no-icons',
-            options: [
-              'p',
-              'h1',
-              'h2',
-              'h3',
-              'h4',
-              'h5',
-              'h6',
-              'code'
-            ]
-          }],  ['quote', 'unordered', 'ordered', 'outdent', 'indent'], ['viewsource']]"
-          />
-
-          <div class="mt-2" v-if="!insufficientDaoBalance">
-            <b-button @click="submitProfile">Submit Profile</b-button>
-          </div>
-
-          <div class="mt-3">
-            <div class="alert alert-warning">Registering as a candidate requires {{stakeRequirement}} tokens to be locked, you have {{daoTokenBalance}} available</div>
-            <div class="alert alert-danger" v-if="insufficientDaoBalance">You do not have enough DAO tokens to register</div>
-          </div>
-        </form>
-      </div>
-
-      <div class="col-6 q-pa-sm">
-        <h2>Preview</h2>
-        <div v-if="profile.image">
-          <img :src="profile.image" style="width: 435px" />
-        </div>
-        <div v-html="candidateDescSanitized"></div>
-      </div>
-    </div>
-    <div class="row" v-else>
-      Awaiting login
-    </div> -->
-
   </div>
 </template>
 

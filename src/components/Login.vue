@@ -1,11 +1,13 @@
 <template>
   <div>
     <div v-if="getAccountName.wax">
-      <span class="status">Logged in as</span> <span> {{getAccountName.wax}}</span>
-      <a role="button" tabindex="0" href="#" target="_self" class="button" @click="logout('wax', $event)">Log out</a>
+      <div class="islogged active">
+        <span class="status">Logged in </span> <span>{{getAccountName.wax}}</span>
+        <a class="button logoutbtn active" @click="logout('wax', $event)">Log Out</a>
+      </div>
     </div>
     <div v-else>
-      <a role="button" tabindex="0" href="#" target="_self" class="button" @click="login('wax', $event)">Log in</a>
+      <div class="notlogged active"><a class="button loginbtn" @click="login('wax', $event)">Log In</a></div>
     </div>
   </div>
 </template>

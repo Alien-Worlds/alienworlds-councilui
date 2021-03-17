@@ -8,6 +8,7 @@
           <p>{{planet.metadata.description}}</p>
           <a class="button vote" @click="show = false;showVoting = true">View Candidates</a>
         </div>
+        <div class="back" @click="showRegister = false" v-if="showRegister">Back to Planet Info</div>
         <register-candidate />
       </div>
       <div class="theplanet">
@@ -17,6 +18,7 @@
     </div>
 
     <div id="voting" v-bind:class="['contents', planetName, {active: showVoting}]">
+      <div class="back" v-if="!showingCandidate" @click="showVoting = false;show = true">Back to Planet Info</div>
       <div class="titlewrap">
         <h2 class="title">{{planet.title}}</h2><div class="globe"></div><h4>Candidates</h4>
       </div>
@@ -57,60 +59,6 @@
     </div>
   </div>
 
-    <!--
-    <h1>{{planet.title}}</h1>
-    <b-container>
-      <b-row>
-        <b-col sm="2"><img :src="planet.fullImage" style="max-width:150px" /></b-col>
-        <b-col sm="10">
-          {{planet.metadata.description}}
-          <p><router-link :to="'/register/' + planetName">Register as a Candidate</router-link></p>
-        </b-col>
-      </b-row>
-    </b-container>
-
-    <hr />
-
-    <div v-if="candidatesLoaded">
-      <b-card-group columns style="color:#000" v-if="candidates.length">
-        <b-card
-          :title="candidate.profile.givenName + ' ' + candidate.profile.familyName"
-          :img-src="candidate.profile.image"
-          :img-alt="candidate.profile.givenName + ' ' + candidate.profile.familyName"
-          img-top
-          v-for="candidate in candidates"
-          :key="candidate.candidate_name"
-        >
-          <b-card-text>
-            <b-card-text><small>{{candidate.candidate_name}} - {{candidate.total_votes}} Votes</small></b-card-text>
-            {{candidate.short_description}}
-          </b-card-text>
-          <template #footer>
-            <b-container fluid>
-              <b-row>
-                <b-col class="text-right"><b-button @click="viewCandidate(candidate)">More</b-button></b-col>
-              </b-row>
-            </b-container>
-          </template>
-        </b-card>
-      </b-card-group>
-
-      <div v-else>
-        No candidates registered for this planet
-      </div>
-    </div>
-
-    <div v-if="!candidatesLoaded">Loading...</div>
-
-    <b-modal id="candidate-detail-modal" hide-footer style="background-color:#000">
-      <template #modal-title>
-        {{candidateDetail.title}}
-      </template>
-      <div class="d-block text-center" v-html="candidateDetail.description">
-      </div>
-      <b-button class="mt-3" block @click="$bvModal.hide('candidate-detail-modal')">Close</b-button>
-    </b-modal> -->
-<!--  </div>-->
 </template>
 
 <script>
@@ -185,6 +133,14 @@ export default {
     viewCandidate (candidate) {
       this.selectedCandidate = candidate
       this.showingCandidate = true
+    },
+    scrollTop: function () {
+      this.intervalId = setInterval(() => {
+        if (window.pageYOffset === 0) {
+          clearInterval(this.intervalId)
+        }
+        window.scroll(0, window.pageYOffset - 50)
+      }, 20)
     }
   },
   watch: {
@@ -197,6 +153,10 @@ export default {
       this.showingCandidate = false
       this.planetName = planetname
       this.loadPlanet(planetname)
+      this.scrollTop()
+    },
+    showingCandidate: function () {
+      this.scrollTop()
     }
   },
   async mounted () {
