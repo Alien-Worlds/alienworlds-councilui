@@ -120,6 +120,13 @@ export default {
         if (plainDesc.length > 300) {
           c.short_description += ' ...'
         }
+        // TODO: Support all ipfs links
+        console.log(c)
+        c.profile.image = c.profile.image.replace('wax.atomichub', 'ipfs')
+        if (c.profile.image.substr(0, 1) === 'Q') {
+          c.profile.image = `https://ipfs.io/ipfs/${c.profile.image}`
+        }
+        console.log(c)
         return c
       })
 

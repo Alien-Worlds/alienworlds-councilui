@@ -91,30 +91,34 @@ export default {
         dacName = 'nerix'
       }
       this.dacName = dacName
-      const [, sym] = this.planet.dac_symbol.split(',')
-      this.dacSymbol = sym
-      this.stakeRequirement = `0.0000 ${sym}`
-      const sr = await this.$getStakeRequirement(dacName)
-      if (sr) {
-        this.stakeRequirement = sr
-      }
-      const tokenRes = await this.$wax.rpc.get_currency_balance(process.env.daoTokenContract, this.getAccountName.wax, sym)
-      // console.log(tokenRes)
-      this.daoTokenBalance = `0.0000 ${sym}`
-      if (tokenRes.length) {
-        this.daoTokenBalance = tokenRes[0]
-      }
-      const existingStake = await this.$getStake(this.getAccountName.wax)
-      console.log(existingStake)
-      const [balStr] = this.daoTokenBalance.split(' ')
-      const [reqStr] = this.stakeRequirement.split(' ')
-      let existingStr = `0.0000 ${sym}`
-      if (existingStake) {
-        [existingStr] = existingStake.split(' ')
-      }
-      this.insufficientDaoBalance = false
-      if (parseFloat(reqStr) > (parseFloat(balStr) + parseFloat(existingStr))) {
-        this.insufficientDaoBalance = true
+
+      // stake data
+      if (this.getAccountName.wax) {
+        const [, sym] = this.planet.dac_symbol.split(',')
+        this.dacSymbol = sym
+        this.stakeRequirement = `0.0000 ${sym}`
+        const sr = await this.$getStakeRequirement(dacName)
+        if (sr) {
+          this.stakeRequirement = sr
+        }
+        const tokenRes = await this.$wax.rpc.get_currency_balance(process.env.daoTokenContract, this.getAccountName.wax, sym)
+        // console.log(tokenRes)
+        this.daoTokenBalance = `0.0000 ${sym}`
+        if (tokenRes.length) {
+          this.daoTokenBalance = tokenRes[0]
+        }
+        const existingStake = await this.$getStake(this.getAccountName.wax)
+        console.log(existingStake)
+        const [balStr] = this.daoTokenBalance.split(' ')
+        const [reqStr] = this.stakeRequirement.split(' ')
+        let existingStr = `0.0000 ${sym}`
+        if (existingStake) {
+          [existingStr] = existingStake.split(' ')
+        }
+        this.insufficientDaoBalance = false
+        if (parseFloat(reqStr) > (parseFloat(balStr) + parseFloat(existingStr))) {
+          this.insufficientDaoBalance = true
+        }
       }
     },
     async loadCandidateInfo () {
