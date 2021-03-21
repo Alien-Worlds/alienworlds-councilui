@@ -25,7 +25,7 @@
       <div v-bind:class="['candidateswrap', {viewbio: showingCandidate}]">
         <!-- -------------------Main Candidate Profile------------------- -->
         <div class="candprofile" v-for="candidate in candidates" :key="candidate.candidate_name">
-          <div class="persona" @click="viewCandidate(candidate)">
+          <div class="persona" @click="showCandidateName(candidate.candidate_name)">
             <div class="image" v-bind:style="{'backgroundImage': 'url(' + candidate.profile.image + ')'}" v-if="candidate.profile.image"></div>
             <div class="image" v-if="!candidate.profile.image"></div>
             <div class="personainfo">
@@ -48,11 +48,11 @@
             <div class="personainfo"><div class="name">{{selectedCandidate.profile.givenName}} {{selectedCandidate.profile.familyName}}</div>
               <div class="votes"><div class="count">0</div></div></div>
           </div>
+          <a class="button invert back" @click="showingCandidate = false" style="margin-top:20px;width:100%;text-align:center">Back to Candidate List</a>
 <!--          <div class="votebtn"><div class="voteicon"></div></div>-->
         </div>
         <div class="biodesc">
           <p v-html="selectedCandidate.profile.description"></p>
-          <a class="button invert return" @click="showingCandidate = false">Back to Candidate List</a>
         </div>
       </div>
 
@@ -132,14 +132,22 @@ export default {
 
       this.candidatesLoaded = true
       this.loaded = true
-
-      setTimeout(() => {
-        this.show = true
-      }, 50)
     },
     viewCandidate (candidate) {
       this.selectedCandidate = candidate
+      this.show = false
+      this.showVoting = true
       this.showingCandidate = true
+    },
+    showCandidateName (name) {
+      window.document.location.hash = name
+      const candidate = this.candidates.find(c => c.candidate_name === name)
+      if (candidate) {
+        console.log('showing candidate', candidate)
+        this.viewCandidate(candidate)
+      } else {
+        this.show = true
+      }
     },
     scrollTop: function () {
       this.intervalId = setInterval(() => {
@@ -161,6 +169,13 @@ export default {
       this.planetName = planetname
       this.loadPlanet(planetname)
       this.scrollTop()
+    },
+    candidatesLoaded: function (loaded) {
+      if (loaded && document.location.hash) {
+        this.showCandidateName(document.location.hash.substr(1))
+      } else {
+        this.show = true
+      }
     },
     showingCandidate: function () {
       this.scrollTop()
