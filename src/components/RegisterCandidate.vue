@@ -51,6 +51,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import sanitizeHtml from 'sanitize-html'
+const sanitizeOptions = {
+  allowedTags: ['b', 'i', 'em', 'strong', 'a', 'strike', 'u', 'iframe', 'br', 'p', 'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote', 'hr'],
+  allowedAttributes: {
+    a: ['href'],
+    iframe: ['width', 'height', 'src', 'allow', 'allowfullscreen']
+  },
+  allowedIframeHostnames: ['www.youtube.com']
+}
 
 export default {
   name: 'RegisterCandidate',
@@ -255,14 +263,6 @@ export default {
       }
     },
     getProfileJson () {
-      const sanitizeOptions = {
-        allowedTags: ['b', 'i', 'em', 'strong', 'a', 'strike'],
-        allowedAttributes: {
-          a: ['href']
-        },
-        allowedIframeHostnames: ['www.youtube.com']
-      }
-
       const obj = {
         givenName: sanitizeHtml(this.profile.givenName, sanitizeOptions),
         familyName: sanitizeHtml(this.profile.familyName, sanitizeOptions),
@@ -284,14 +284,6 @@ export default {
       this.loadPlanet(this.$route.params.planetname)
     },
     'profile.description': function (text) {
-      const sanitizeOptions = {
-        allowedTags: ['b', 'i', 'em', 'strong', 'a', 'strike', 'iframe', 'br', 'p'],
-        allowedAttributes: {
-          a: ['href'],
-          iframe: ['width', 'height', 'src', 'allow', 'allowfullscreen']
-        },
-        allowedIframeHostnames: ['www.youtube.com']
-      }
       this.candidateDescSanitized = sanitizeHtml(text, sanitizeOptions)
     }
   },
