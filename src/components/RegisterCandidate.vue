@@ -279,9 +279,10 @@ export default {
       await this.loadPlanet(planetname)
       await this.loadCandidateInfo()
     },
-    getAccountName: function (account) {
+    getAccountName: async function (account) {
       console.log('Accounbt changed')
-      this.loadPlanet(this.$route.params.planetname)
+      await this.loadPlanet(this.$route.params.planetname)
+      await this.loadCandidateInfo()
     },
     'profile.description': function (text) {
       this.candidateDescSanitized = sanitizeHtml(text, sanitizeOptions)
